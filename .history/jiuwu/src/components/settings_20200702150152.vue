@@ -1,0 +1,47 @@
+<template>
+  <div class="settings">
+    <div class="cate_nav">
+      <van-icon @click="fanhui" class="fanhui" name="arrow-left" />设置
+    </div>
+    <div class="person_con">
+      <van-cell icon="http://localhost:3000/image/icon_jisale.jpg" title="寄售商品" is-link />
+      <van-cell icon="http://localhost:3000/image/icon_guasale.jpg" title="挂售商品" is-link />
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapMutations } from "vuex";
+export default {
+  data() {
+    return {};
+  },
+  methods: {
+    ...mapMutations(["change"]),
+    fanhui() {
+      this.$router.go(-1);
+      this.$store.commit("change", true);
+    }
+  },
+  mounted () {
+    this.$store.commit("change", false);
+  }
+};
+</script>
+
+<style scoped>
+.fanhui {
+  float: left;
+  font-size: 18px;
+}
+.cate_nav {
+  width: 100%;
+  padding: 2vh 2vw;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+div{
+    box-sizing: border-box;
+}
+</style>
