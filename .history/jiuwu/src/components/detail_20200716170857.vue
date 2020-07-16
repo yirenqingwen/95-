@@ -196,36 +196,30 @@ export default {
           name: "confirmOrder",
           params: { order: this.value }
         });
-      } else {
-        this.$toast("未登录，请先登录");
-        this.$router.push({ name: "login" });
+      }else{
+        this.$toast("未登录，")
       }
     },
     like() {
-      if (this.$cookies.get("user_id")) {
-        let collectStatus;
-        if (this.$refs.star.className == "graystar van-icon van-icon-star lv") {
-          this.$refs.star.className = "graystar van-icon van-icon-star";
-          // 取消收藏
-          collectStatus = false;
-        } else {
-          this.$refs.star.className = "graystar van-icon van-icon-star lv";
-          // 添加收藏
-          collectStatus = true;
-        }
-        this.api
-          .collections({
-            collectStatus,
-            user: this.$cookies.get("user_id"),
-            shangpin: this.value
-          })
-          .then(res => {
-            this.$toast(res.data.msg);
-          });
+      let collectStatus;
+      if (this.$refs.star.className == "graystar van-icon van-icon-star lv") {
+        this.$refs.star.className = "graystar van-icon van-icon-star";
+        // 取消收藏
+        collectStatus = false;
       } else {
-        this.$toast("未登录，请先登录");
-        this.$router.push({ name: "login" });
+        this.$refs.star.className = "graystar van-icon van-icon-star lv";
+        // 添加收藏
+        collectStatus = true;
       }
+      this.api
+        .collections({
+          collectStatus,
+          user: this.$cookies.get("user_id"),
+          shangpin: this.value
+        })
+        .then(res => {
+          this.$toast(res.data.msg);
+        });
     }
   }
 };

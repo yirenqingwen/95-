@@ -140,40 +140,28 @@ export default {
   },
   mounted() {
     if (this.$route.params.value) {
-      window.localStorage.setItem(
-        "detailShopData",
-        JSON.stringify(this.$route.params.value)
-      );
+      window.localStorage.setItem("detailShopData",JSON.stringify(this.$route.params.value))
       this.value = this.$route.params.value;
     } else {
-      this.value = JSON.parse(window.localStorage.getItem("detailShopData"));
+      this.value=JSON.parse(window.localStorage.getItem("detailShopData"))
     }
     this.maxPage = this.value.detailPic.length;
     this.$store.commit("change", false);
     // 查询该商品是否被登录用户收藏
-    this.api
-      .selectCollect({
-        user: this.$cookies.get("user_id"),
-        shangpinId: this.value._id
-      })
-      .then(res => {
-        if (res.data.collectStatus == true) {
-          this.$refs.star.className = "graystar van-icon van-icon-star lv";
+    this.api.selectCollect({user:this.$cookies.get("user_id"),shangpinId:this.value._id}).then(
+      res=>{
+        if(res.data.collectStatus==true){
+          this.$refs.star.className="graystar van-icon van-icon-star lv"
         }
-      });
+      }
+    )
     // 浏览记录存储
-    let mydate = new Date();
-    let year = mydate.getFullYear();
-    let month = mydate.getMonth() + 1;
-    let day = mydate.getDate();
-    let time = year + "/" + month + "/" + day;
-    this.api
-      .footprintSave({
-        user: this.$cookies.get("user_id"),
-        shangpin: this.value,
-        time: time
-      })
-      .then(res => {});
+    let mydate=new Date
+    let year=mydate.getFullYear()
+    let month=mydate.getMonth()+1
+    let day=mydate.getDate()
+    let time=year+"/"+month+"/"+day
+    this.api.footprintSave({user:this.$cookies.get("user_id"),shangpin:this.value,time:time}).then(res=>{})
   },
   methods: {
     ...mapMutations(["change"]),
@@ -191,48 +179,34 @@ export default {
       this.show2 = true;
     },
     goumai() {
-      if (this.$cookies.get("user_id")) {
-        this.$router.push({
-          name: "confirmOrder",
-          params: { order: this.value }
-        });
-      } else {
-        this.$toast("未登录，请先登录");
-        this.$router.push({ name: "login" });
-      }
+      
+      this.$router.push({
+        name: "confirmOrder",
+        params: { order: this.value }
+      });
     },
-    like() {
-      if (this.$cookies.get("user_id")) {
-        let collectStatus;
-        if (this.$refs.star.className == "graystar van-icon van-icon-star lv") {
-          this.$refs.star.className = "graystar van-icon van-icon-star";
-          // 取消收藏
-          collectStatus = false;
-        } else {
-          this.$refs.star.className = "graystar van-icon van-icon-star lv";
-          // 添加收藏
-          collectStatus = true;
-        }
-        this.api
-          .collections({
-            collectStatus,
-            user: this.$cookies.get("user_id"),
-            shangpin: this.value
-          })
-          .then(res => {
-            this.$toast(res.data.msg);
-          });
-      } else {
-        this.$toast("未登录，请先登录");
-        this.$router.push({ name: "login" });
+    like(){
+      let collectStatus
+      if(this.$refs.star.className=="graystar van-icon van-icon-star lv"){
+        this.$refs.star.className="graystar van-icon van-icon-star"
+        // 取消收藏
+        collectStatus=false
+      }else{
+        this.$refs.star.className="graystar van-icon van-icon-star lv"
+        // 添加收藏
+        collectStatus=true
       }
+      this.api.collections({collectStatus,user:this.$cookies.get("user_id"),shangpin:this.value})
+      .then(res=>{
+        this.$toast(res.data.msg)
+      })
     }
   }
 };
 </script>
 
 <style scoped>
-.lv {
+.lv{
   color: rgb(83, 163, 100);
 }
 .content > img {
